@@ -3,10 +3,10 @@
 // @name         Wayfarer in-page translator
 // @category     Controls
 // @namespace    https://github.com/wiinuk/wayfarer-in-page-translator
-// @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/master/wayfarer-in-page-translator.user.js
-// @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/master/wayfarer-in-page-translator.user.js
+// @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
+// @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @homepageURL  https://github.com/wiinuk/wayfarer-in-page-translator
-// @version      0.1.0
+// @version      0.1.1
 // @description  In-page translation Wayfarer plugin for Wayspot review.
 // @author       Wiinuk
 // @match        https://wayfarer.nianticlabs.com/*
