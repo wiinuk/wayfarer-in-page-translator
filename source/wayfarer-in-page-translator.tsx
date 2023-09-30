@@ -212,8 +212,10 @@ async function addTranslatorElement(
     const translatedText = await translate(text, {
         signal,
     });
-    const translatedDisplayText = (translatedElement.innerText =
-        text === translatedText ? "" : translatedText);
+    const translatedDisplayText = text === translatedText ? "" : translatedText;
+
+    translatedElement.innerText = translatedDisplayText;
+    translatedElement.classList.add(classNames["fade-in"]);
     if (translatedDisplayText === "") {
         translatedElement.remove();
     }
@@ -306,15 +308,12 @@ async function onGetReview({ signal }: { signal: AbortSignal }) {
         { signal }
     );
 
-    reviewElementCleaner = reviewElementCleaner.append(
-        await addTranslatorElement(titleElement, { signal })
+    const disposes = await Promise.all(
+        [titleElement, descriptionElement, supplementaryElement].map((e) =>
+            addTranslatorElement(e, { signal })
+        )
     );
-    reviewElementCleaner = reviewElementCleaner.append(
-        await addTranslatorElement(descriptionElement, { signal })
-    );
-    reviewElementCleaner = reviewElementCleaner.append(
-        await addTranslatorElement(supplementaryElement, { signal })
-    );
+    reviewElementCleaner = reviewElementCleaner.append(...disposes);
 }
 
 async function asyncMain() {

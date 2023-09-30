@@ -1,13 +1,13 @@
 .translated-text {
-  position: absolute;
-  top: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
 
-  font-size: 12px;
-  padding: 5px;
+    font-size: 12px;
+    padding: 5px;
 }
 :has(> .translated-text) {
     position: relative;
@@ -15,6 +15,7 @@
 
 .spinner:before {
     content: "";
+    z-index: 5;
     box-sizing: border-box;
     position: absolute;
     top: 50%;
@@ -35,4 +36,23 @@
 
 .spinner * {
     display: none;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn ease 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
