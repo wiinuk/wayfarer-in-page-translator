@@ -6,7 +6,7 @@
 // @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @homepageURL  https://github.com/wiinuk/wayfarer-in-page-translator
-// @version      0.1.3
+// @version      0.1.4
 // @description  In-page translation Wayfarer plugin for Wayspot review.
 // @author       Wiinuk
 // @match        https://wayfarer.nianticlabs.com/*
@@ -540,10 +540,11 @@ function optional(schema) {
 }
 
 ;// CONCATENATED MODULE: ./source/styles.module.css
-const cssText = ".translated-text-2044f942c75a6114f357c4482e64023d05b92f67 {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  color: white;\r\n\r\n  font-size: 12px;\r\n  padding: 5px;\r\n}\r\n:has(> .translated-text-2044f942c75a6114f357c4482e64023d05b92f67) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c:before {\r\n    content: \"\";\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c * {\r\n    display: none;\r\n}\r\n";
+const cssText = ".translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68 {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n    color: white;\r\n\r\n    font-size: 12px;\r\n    padding: 5px;\r\n}\r\n:has(> .translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-d2322049c52edbe0f5a3d72ab82477e14794e360:before {\r\n    content: \"\";\r\n    z-index: 5;\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-d2322049c52edbe0f5a3d72ab82477e14794e360 * {\r\n    display: none;\r\n}\r\n\r\n.fade-in-0bcc608d2046f87c4d231bf1a5eb07693ceddc01 {\r\n    opacity: 0;\r\n    transform: translateY(20px);\r\n    animation: fadeIn ease 1s;\r\n    animation-fill-mode: forwards;\r\n}\r\n\r\n@keyframes fadeIn {\r\n    0% {\r\n        opacity: 0;\r\n        transform: translateY(20px);\r\n    }\r\n\r\n    100% {\r\n        opacity: 1;\r\n        transform: translateY(0);\r\n    }\r\n}\r\n";
 /* harmony default export */ const styles_module = ({
-    "translated-text": "translated-text-2044f942c75a6114f357c4482e64023d05b92f67",
-    spinner: "spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c",
+    "translated-text": "translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68",
+    spinner: "spinner-d2322049c52edbe0f5a3d72ab82477e14794e360",
+    "fade-in": "fade-in-0bcc608d2046f87c4d231bf1a5eb07693ceddc01",
 });
 
 ;// CONCATENATED MODULE: ./source/switch.module.css
@@ -705,8 +706,9 @@ function addTranslatorElement(element, { signal }) {
         const translatedText = yield translate(text, {
             signal,
         });
-        const translatedDisplayText = (translatedElement.innerText =
-            text === translatedText ? "" : translatedText);
+        const translatedDisplayText = text === translatedText ? "" : translatedText;
+        translatedElement.innerText = translatedDisplayText;
+        translatedElement.classList.add(styles_module["fade-in"]);
         if (translatedDisplayText === "") {
             translatedElement.remove();
         }
@@ -763,9 +765,8 @@ function onGetReview({ signal }) {
         const titleElement = yield waitElementLoadedBy("#title-description-card > .wf-review-card__body > div > a > div", { signal });
         const descriptionElement = yield waitElementLoadedBy("#title-description-card > .wf-review-card__body > div > div", { signal });
         const supplementaryElement = yield waitElementLoadedBy("app-supporting-info wf-review-card > .wf-review-card__body > :nth-child(1) > :nth-child(2)", { signal });
-        reviewElementCleaner = reviewElementCleaner.append(yield addTranslatorElement(titleElement, { signal }));
-        reviewElementCleaner = reviewElementCleaner.append(yield addTranslatorElement(descriptionElement, { signal }));
-        reviewElementCleaner = reviewElementCleaner.append(yield addTranslatorElement(supplementaryElement, { signal }));
+        const disposes = yield Promise.all([titleElement, descriptionElement, supplementaryElement].map((e) => addTranslatorElement(e, { signal })));
+        reviewElementCleaner = reviewElementCleaner.append(...disposes);
     });
 }
 function asyncMain() {
