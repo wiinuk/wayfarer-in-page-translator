@@ -6,7 +6,7 @@
 // @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @homepageURL  https://github.com/wiinuk/wayfarer-in-page-translator
-// @version      0.1.1
+// @version      0.1.2
 // @description  In-page translation Wayfarer plugin for Wayspot review.
 // @author       Wiinuk
 // @match        https://wayfarer.nianticlabs.com/*
@@ -540,10 +540,10 @@ function optional(schema) {
 }
 
 ;// CONCATENATED MODULE: ./source/styles.module.css
-const cssText = ".translated-text-2044f942c75a6114f357c4482e64023d05b92f67 {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  color: white;\r\n\r\n  font-size: 12px;\r\n  padding: 5px;\r\n}\r\n:has(> .translated-text-2044f942c75a6114f357c4482e64023d05b92f67) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c:before {\r\n    content: \"\";\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c * {\r\n    display: none;\r\n}\r\n";
+const cssText = ".translated-text-58873c60e0a82af9a88b921e5546810b3b2bf2a1 {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  backdrop-filter: blur(2px);\r\n  color: white;\r\n\r\n  font-size: 12px;\r\n  padding: 5px;\r\n}\r\n:has(> .translated-text-58873c60e0a82af9a88b921e5546810b3b2bf2a1) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-93b25c750ac7b5afa8e21d77e65dc41870c4943c:before {\r\n    content: \"\";\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-93b25c750ac7b5afa8e21d77e65dc41870c4943c * {\r\n    display: none;\r\n}\r\n";
 /* harmony default export */ const styles_module = ({
-    "translated-text": "translated-text-2044f942c75a6114f357c4482e64023d05b92f67",
-    spinner: "spinner-bcdb336e4937de3d3a20e28f347204c48bf4880c",
+    "translated-text": "translated-text-58873c60e0a82af9a88b921e5546810b3b2bf2a1",
+    spinner: "spinner-93b25c750ac7b5afa8e21d77e65dc41870c4943c",
 });
 
 ;// CONCATENATED MODULE: ./source/switch.module.css
