@@ -165,3 +165,15 @@ export type equals<T1, T2> = [T1] extends [T2]
         ? true
         : false
     : false;
+
+export async function waitBy<T>(
+    predicate: () => T,
+    option?: { signal?: AbortSignal; intervalMilliseconds?: number }
+) {
+    const interval = option?.intervalMilliseconds ?? 500;
+    for (;;) {
+        const result = predicate();
+        if (result) return result;
+        await sleep(interval, option);
+    }
+}

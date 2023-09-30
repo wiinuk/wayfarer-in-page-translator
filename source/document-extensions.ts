@@ -1,5 +1,5 @@
 import packageJson from "../package.json";
-import { error } from "./standard-extensions";
+import { error, type AsyncOptions, waitBy } from "./standard-extensions";
 export function waitElementLoaded() {
     if (document.readyState !== "loading") {
         return Promise.resolve();
@@ -7,6 +7,15 @@ export function waitElementLoaded() {
     return new Promise<void>((resolve) =>
         document.addEventListener("DOMContentLoaded", () => resolve())
     );
+}
+
+export async function waitElementLoadedBy(
+    selectors: string,
+    options?: AsyncOptions & {
+        intervalMilliseconds?: number;
+    }
+) {
+    return waitBy(() => document.querySelector(selectors), options);
 }
 
 type CssSourceParts = string | number;
@@ -125,4 +134,51 @@ export function parseCssColor(
     result.b = parseInt(b!);
     result.a = a === undefined ? 1 : parseFloat(a);
     return result;
+}
+
+export interface FetchJsonpOptions {
+    parameters?: Record<string, string>;
+    callbackParameterName?: string;
+    global?: typeof globalThis;
+}
+
+type Json = null | number | string | Json[] | { [key: string]: Json };
+export function fetchJsonp(input: string, options?: FetchJsonpOptions) {
+    return new Promise<Json>((resolve, reject) => {
+        const global = options?.global ?? globalThis;
+        const parameters = options?.parameters ?? {};
+        const callbackParameterName =
+            options?.callbackParameterName ?? "callback";
+
+        const callbackName = `jsonp_callback_${Date.now()}_${global.Math.round(
+            100000 * global.Math.random()
+        )}`;
+
+        const source = new global.URL(input);
+        for (const [key, value] of global.Object.entries(parameters)) {
+            source.searchParams.append(key, value);
+        }
+        source.searchParams.append(callbackParameterName, callbackName);
+
+        const script = global.document.createElement("script");
+        script.type = "text/javascript";
+        script.src = source.toString();
+
+        const globalStore = global as typeof globalThis & {
+            [callbackName: string]: unknown;
+        };
+        globalStore[callbackName] = function (data: Json) {
+            delete globalStore[callbackName];
+            global.document.body.removeChild(script);
+            resolve(data);
+        };
+
+        script.onerror = function () {
+            delete globalStore[callbackName];
+            global.document.body.removeChild(script);
+            reject(new global.Error("JSONP request failed"));
+        };
+
+        global.document.body.appendChild(script);
+    });
 }
