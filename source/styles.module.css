@@ -1,14 +1,64 @@
 .translated-text {
+    /* 上にかぶせる */
     position: absolute;
     top: 0;
     left: 0;
 
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    /* 色など */
+    background-color: rgba(68, 68, 68, 0.7);
+    border-radius: 24px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(3px);
+    color: #d2d0ce;
+    cursor: move;
 
+    /* サイズ */
     font-size: 12px;
     padding: 5px;
 }
+
+/* ドラッグハンドル */
+.handle {
+    --handle-size: 13px;
+}
+.handle {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+
+    height: calc(var(--handle-size) * 0.9);
+    width: var(--handle-size);
+
+    margin: 0 calc(var(--handle-size) * 0.2);
+}
+.handle div {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+
+    background-color: rgb(0 0 0 / 20%);
+    box-shadow: 0px 0px 2px #aaa;
+    border-radius: 2px;
+}
+.handle div:nth-of-type(1) {
+    top: 0;
+}
+.handle div:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+.handle div:nth-of-type(3) {
+    bottom: 0;
+}
+
+.translated-text:active {
+    /* ドラッグ中 */
+    cursor: grabbing;
+}
+
 :has(> .translated-text) {
     position: relative;
 }

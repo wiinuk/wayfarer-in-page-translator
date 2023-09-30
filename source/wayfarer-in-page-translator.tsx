@@ -187,6 +187,51 @@ class Disposable {
     }
 }
 
+function draggable<E extends HTMLElement>(element: E) {
+    function getPrimaryContact(event: MouseEvent | TouchEvent) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return event instanceof TouchEvent ? event.touches[0]! : event;
+    }
+    function onDragStart(this: HTMLElement, event: MouseEvent | TouchEvent) {
+        const { clientX: initialX, clientY: initialY } =
+            getPrimaryContact(event);
+
+        const { left, top } = window.getComputedStyle(this);
+        const currentX = parseInt(left);
+        const currentY = parseInt(top);
+
+        const onDragMove = (event: MouseEvent | TouchEvent) => {
+            const { clientX, clientY } = getPrimaryContact(event);
+            const deltaX = clientX - initialX;
+            const deltaY = clientY - initialY;
+            this.style.left = `${currentX + deltaX}px`;
+            this.style.top = `${currentY + deltaY}px`;
+        };
+        const onDragEnd = () => {
+            document.removeEventListener("mousemove", onDragMove);
+            document.removeEventListener("touchmove", onDragMove);
+        };
+
+        // passive: true => 「イベントハンドラ内で preventDefault を使わない」ということを宣言しパフォーマンスを改善する
+        document.addEventListener("mousemove", onDragMove, { passive: true });
+        document.addEventListener("touchmove", onDragMove, { passive: true });
+        // once: true => onDragEnd は一回実行後自動削除される
+        document.addEventListener("mouseup", onDragEnd, { once: true });
+        document.addEventListener("touchend", onDragEnd, { once: true });
+
+        // リンクを開く挙動などを抑制
+        event.preventDefault();
+    }
+
+    element.addEventListener("click", (event) => {
+        // リンクを開く挙動などを抑制
+        event.preventDefault();
+    });
+    element.addEventListener("mousedown", onDragStart);
+    element.addEventListener("touchend", onDragStart);
+    return element;
+}
+
 async function addTranslatorElement(
     element: Element,
     { signal }: { signal: AbortSignal }
@@ -197,8 +242,15 @@ async function addTranslatorElement(
             <span>...読み込み中</span>
         </div>
     );
-    const translatedElement = (
-        <span class={classNames["translated-text"]}>{spinnerElement}</span>
+    const translatedElement = draggable(
+        <span class={classNames["translated-text"]}>
+            <div class={classNames.handle}>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            {spinnerElement}
+        </span>
     );
     const translationElement = (
         <div>
@@ -214,7 +266,8 @@ async function addTranslatorElement(
     });
     const translatedDisplayText = text === translatedText ? "" : translatedText;
 
-    translatedElement.innerText = translatedDisplayText;
+    spinnerElement.remove();
+    translatedElement.append(translatedDisplayText);
     translatedElement.classList.add(classNames["fade-in"]);
     if (translatedDisplayText === "") {
         translatedElement.remove();
