@@ -6,7 +6,7 @@
 // @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @homepageURL  https://github.com/wiinuk/wayfarer-in-page-translator
-// @version      0.1.2
+// @version      0.1.3
 // @description  In-page translation Wayfarer plugin for Wayspot review.
 // @author       Wiinuk
 // @match        https://wayfarer.nianticlabs.com/*
