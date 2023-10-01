@@ -4,7 +4,7 @@ import {
     waitElementLoaded,
     waitElementLoadedBy,
 } from "./document-extensions";
-import { z } from "../../gas-drivetunnel/source/json-schema";
+import { z } from "./json-schema";
 import classNames, { cssText } from "./styles.module.css";
 import switchClassNames, {
     cssText as switchCssText,
@@ -280,19 +280,26 @@ const settingsKey =
     "wayfarer-in-page-translator-026fd711-881a-4482-a645-3f760b874b03";
 
 const settingsV1 = z.strictObject({
-    enabled: z.union([z.literal(true), z.literal(false)]).optional(),
+    version: z.literal("1").optional(),
+    enabled: z.boolean().optional(),
 });
+const settingsSchema = settingsV1;
 type Settings = z.infer<typeof settingsV1>;
 
-const defaultSettings: Required<Settings> = {
+const defaultSettings: Required<Readonly<Settings>> = {
+    version: "1",
     enabled: true,
 };
 function getSettings() {
-    const settings = settingsV1.parse(
-        JSON.parse(
-            localStorage.getItem(settingsKey) ?? JSON.stringify(defaultSettings)
-        )
-    );
+    let settings: Settings = defaultSettings;
+    const json = localStorage.getItem(settingsKey);
+    if (json != null) {
+        try {
+            settings = settingsSchema.parse(JSON.parse(json));
+        } catch (e) {
+            console.error(pluginName, e);
+        }
+    }
     return Object.freeze(settings);
 }
 function saveSettings(settings: Settings) {
