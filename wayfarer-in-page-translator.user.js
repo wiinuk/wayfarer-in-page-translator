@@ -6,7 +6,7 @@
 // @downloadURL  https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @updateURL    https://github.com/wiinuk/wayfarer-in-page-translator/raw/main/wayfarer-in-page-translator.user.js
 // @homepageURL  https://github.com/wiinuk/wayfarer-in-page-translator
-// @version      0.1.4
+// @version      0.2.0
 // @description  In-page translation Wayfarer plugin for Wayspot review.
 // @author       Wiinuk
 // @match        https://wayfarer.nianticlabs.com/*
@@ -331,7 +331,7 @@ function fetchJsonp(input, options) {
     });
 }
 
-;// CONCATENATED MODULE: ../gas-drivetunnel/source/json-schema-core.ts
+;// CONCATENATED MODULE: ./source/json-schema-core.ts
 const pathCaches = [];
 const seenCaches = [];
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -386,6 +386,7 @@ function validationError(path, expected, actual) {
 function strictObject(shape) {
     const props = [];
     for (const key in shape) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         props.push([key, shape[key]]);
     }
     return wrap((target, path, seen) => {
@@ -424,6 +425,15 @@ function literal(value) {
         return target;
     });
 }
+let booleanSchema;
+function json_schema_core_boolean() {
+    return (booleanSchema !== null && booleanSchema !== void 0 ? booleanSchema : (booleanSchema = wrap((target, path) => {
+        if (typeof target !== "boolean") {
+            throw validationError(path, "boolean", typeof target);
+        }
+        return target;
+    })));
+}
 let stringSchema;
 function string() {
     return (stringSchema !== null && stringSchema !== void 0 ? stringSchema : (stringSchema = wrap((target, path) => {
@@ -450,7 +460,9 @@ function tuple(schemas) {
             throw validationError(path, anyTupleName, actualTypeName);
         }
         for (let i = 0; i < schemas.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const elementSchema = schemas[i];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const element = target[i];
             path.push(i);
             try {
@@ -540,11 +552,12 @@ function optional(schema) {
 }
 
 ;// CONCATENATED MODULE: ./source/styles.module.css
-const cssText = ".translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68 {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n\r\n    background-color: rgba(0, 0, 0, 0.5);\r\n    color: white;\r\n\r\n    font-size: 12px;\r\n    padding: 5px;\r\n}\r\n:has(> .translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-d2322049c52edbe0f5a3d72ab82477e14794e360:before {\r\n    content: \"\";\r\n    z-index: 5;\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-d2322049c52edbe0f5a3d72ab82477e14794e360 * {\r\n    display: none;\r\n}\r\n\r\n.fade-in-0bcc608d2046f87c4d231bf1a5eb07693ceddc01 {\r\n    opacity: 0;\r\n    transform: translateY(20px);\r\n    animation: fadeIn ease 1s;\r\n    animation-fill-mode: forwards;\r\n}\r\n\r\n@keyframes fadeIn {\r\n    0% {\r\n        opacity: 0;\r\n        transform: translateY(20px);\r\n    }\r\n\r\n    100% {\r\n        opacity: 1;\r\n        transform: translateY(0);\r\n    }\r\n}\r\n";
+const cssText = ".translated-text-4c68c78b114e5bf3f8e4d66d8e401de13bf87ecd {\r\n    /* 上にかぶせる */\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n\r\n    /* 色など */\r\n    background-color: rgba(68, 68, 68, 0.7);\r\n    border-radius: 24px;\r\n    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);\r\n    backdrop-filter: blur(3px);\r\n    color: #d2d0ce;\r\n    cursor: move;\r\n\r\n    /* サイズ */\r\n    font-size: 12px;\r\n    padding: 5px;\r\n}\r\n\r\n/* ドラッグハンドル */\r\n.handle-38aab71356327423526714b17d6ef5195736312e {\r\n    --handle-size: 13px;\r\n}\r\n.handle-38aab71356327423526714b17d6ef5195736312e {\r\n    position: relative;\r\n    display: inline-block;\r\n    box-sizing: border-box;\r\n\r\n    height: calc(var(--handle-size) * 0.9);\r\n    width: var(--handle-size);\r\n\r\n    margin: 0 calc(var(--handle-size) * 0.2);\r\n}\r\n.handle-38aab71356327423526714b17d6ef5195736312e div {\r\n    position: absolute;\r\n    left: 0;\r\n    height: 2px;\r\n    width: 100%;\r\n    display: inline-block;\r\n    box-sizing: border-box;\r\n\r\n    background-color: rgb(0 0 0 / 20%);\r\n    box-shadow: 0px 0px 2px #aaa;\r\n    border-radius: 2px;\r\n}\r\n.handle-38aab71356327423526714b17d6ef5195736312e div:nth-of-type(1) {\r\n    top: 0;\r\n}\r\n.handle-38aab71356327423526714b17d6ef5195736312e div:nth-of-type(2) {\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n}\r\n.handle-38aab71356327423526714b17d6ef5195736312e div:nth-of-type(3) {\r\n    bottom: 0;\r\n}\r\n\r\n.translated-text-4c68c78b114e5bf3f8e4d66d8e401de13bf87ecd:active {\r\n    /* ドラッグ中 */\r\n    cursor: grabbing;\r\n}\r\n\r\n:has(> .translated-text-4c68c78b114e5bf3f8e4d66d8e401de13bf87ecd) {\r\n    position: relative;\r\n}\r\n\r\n.spinner-eb8f08484674c364495089ac465c9642c95ce03e:before {\r\n    content: \"\";\r\n    z-index: 5;\r\n    box-sizing: border-box;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    height: 32px;\r\n    width: 32px;\r\n    border-radius: 50%;\r\n    border: 3px solid #ccc;\r\n    border-top-color: #DF471C;\r\n    animation: spinner 4s linear infinite;\r\n}\r\n\r\n@keyframes spinner {\r\n    to {\r\n        transform: rotate(360deg);\r\n    }\r\n}\r\n\r\n.spinner-eb8f08484674c364495089ac465c9642c95ce03e * {\r\n    display: none;\r\n}\r\n\r\n.fade-in-15c070165d25099668cef0990901e0d6b3cb331f {\r\n    opacity: 0;\r\n    transform: translateY(20px);\r\n    animation: fadeIn ease 1s;\r\n    animation-fill-mode: forwards;\r\n}\r\n\r\n@keyframes fadeIn {\r\n    0% {\r\n        opacity: 0;\r\n        transform: translateY(20px);\r\n    }\r\n\r\n    100% {\r\n        opacity: 1;\r\n        transform: translateY(0);\r\n    }\r\n}\r\n";
 /* harmony default export */ const styles_module = ({
-    "translated-text": "translated-text-c5d1f8b344e33b334b605bacdd62af704a7c5d68",
-    spinner: "spinner-d2322049c52edbe0f5a3d72ab82477e14794e360",
-    "fade-in": "fade-in-0bcc608d2046f87c4d231bf1a5eb07693ceddc01",
+    "translated-text": "translated-text-4c68c78b114e5bf3f8e4d66d8e401de13bf87ecd",
+    handle: "handle-38aab71356327423526714b17d6ef5195736312e",
+    spinner: "spinner-eb8f08484674c364495089ac465c9642c95ce03e",
+    "fade-in": "fade-in-15c070165d25099668cef0990901e0d6b3cb331f",
 });
 
 ;// CONCATENATED MODULE: ./source/switch.module.css
@@ -695,19 +708,58 @@ class Disposable {
     }
 }
 Disposable.empty = new Disposable(ignore);
+function draggable(element) {
+    function getPrimaryContact(event) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return event instanceof TouchEvent ? event.touches[0] : event;
+    }
+    function onDragStart(event) {
+        const { clientX: initialX, clientY: initialY } = getPrimaryContact(event);
+        const { left, top } = window.getComputedStyle(this);
+        const currentX = parseInt(left);
+        const currentY = parseInt(top);
+        const onDragMove = (event) => {
+            const { clientX, clientY } = getPrimaryContact(event);
+            const deltaX = clientX - initialX;
+            const deltaY = clientY - initialY;
+            this.style.left = `${currentX + deltaX}px`;
+            this.style.top = `${currentY + deltaY}px`;
+        };
+        const onDragEnd = () => {
+            document.removeEventListener("mousemove", onDragMove);
+            document.removeEventListener("touchmove", onDragMove);
+        };
+        // passive: true => 「イベントハンドラ内で preventDefault を使わない」ということを宣言しパフォーマンスを改善する
+        document.addEventListener("mousemove", onDragMove, { passive: true });
+        document.addEventListener("touchmove", onDragMove, { passive: true });
+        // once: true => onDragEnd は一回実行後自動削除される
+        document.addEventListener("mouseup", onDragEnd, { once: true });
+        document.addEventListener("touchend", onDragEnd, { once: true });
+        // リンクを開く挙動などを抑制
+        event.preventDefault();
+    }
+    element.addEventListener("click", (event) => {
+        // リンクを開く挙動などを抑制
+        event.preventDefault();
+    });
+    element.addEventListener("mousedown", onDragStart);
+    element.addEventListener("touchend", onDragStart);
+    return element;
+}
 function addTranslatorElement(element, { signal }) {
     var _a;
     return wayfarer_in_page_translator_awaiter(this, void 0, void 0, function* () {
         const text = (_a = element.textContent) !== null && _a !== void 0 ? _a : "";
         const spinnerElement = (jsx("div", { class: styles_module.spinner, children: jsx("span", { children: "...\u8AAD\u307F\u8FBC\u307F\u4E2D" }) }));
-        const translatedElement = (jsx("span", { class: styles_module["translated-text"], children: spinnerElement }));
+        const translatedElement = draggable(jsxs("span", { class: styles_module["translated-text"], children: [jsxs("div", { class: styles_module.handle, children: [jsx("div", {}), jsx("div", {}), jsx("div", {})] }), spinnerElement] }));
         const translationElement = (jsxs("div", { children: [jsx("style", { children: cssText }), text, translatedElement] }));
         element.attachShadow({ mode: "open" }).appendChild(translationElement);
         const translatedText = yield translate(text, {
             signal,
         });
         const translatedDisplayText = text === translatedText ? "" : translatedText;
-        translatedElement.innerText = translatedDisplayText;
+        spinnerElement.remove();
+        translatedElement.append(translatedDisplayText);
         translatedElement.classList.add(styles_module["fade-in"]);
         if (translatedDisplayText === "") {
             translatedElement.remove();
@@ -717,14 +769,25 @@ function addTranslatorElement(element, { signal }) {
 }
 const settingsKey = "wayfarer-in-page-translator-026fd711-881a-4482-a645-3f760b874b03";
 const settingsV1 = strictObject({
-    enabled: union([literal(true), literal(false)]).optional(),
+    version: literal("1").optional(),
+    enabled: json_schema_core_boolean().optional(),
 });
+const settingsSchema = settingsV1;
 const defaultSettings = {
+    version: "1",
     enabled: true,
 };
 function getSettings() {
-    var _a;
-    const settings = settingsV1.parse(JSON.parse((_a = localStorage.getItem(settingsKey)) !== null && _a !== void 0 ? _a : JSON.stringify(defaultSettings)));
+    let settings = defaultSettings;
+    const json = localStorage.getItem(settingsKey);
+    if (json != null) {
+        try {
+            settings = settingsSchema.parse(JSON.parse(json));
+        }
+        catch (e) {
+            console.error(pluginName, e);
+        }
+    }
     return Object.freeze(settings);
 }
 function saveSettings(settings) {
